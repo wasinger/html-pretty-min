@@ -177,6 +177,7 @@ class PrettyMin
     protected function minifyCss()
     {
         $elements = $this->doc->getElementsByTagName('style');
+        $to_be_removed = [];
         /** @var \DOMElement $element */
         foreach ($elements as $element) {
             $code = $element->nodeValue;
@@ -190,8 +191,11 @@ class PrettyMin
                 $element->appendChild($ct);
             } else {
                 // Style tag is empty, remove it completely
-                $element->parentNode->removeChild($element);
+                array_push($to_be_removed, $element);
             }
+        }
+        foreach ($to_be_removed as $element) {
+            $element->parentNode->removeChild($element);
         }
     }
 
