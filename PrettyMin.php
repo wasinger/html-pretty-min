@@ -247,38 +247,21 @@ class PrettyMin
         foreach($nodeList as $node) {
             /** @var \DOMNode $node */
 
-            // keep white space inside special elements
-            if (in_array($node->parentNode->nodeName, $this->options['keep_whitespace_in'])) continue;
-
             if (in_array($node->parentNode->nodeName, $this->options['keep_whitespace_in'])) {
-//                $node->nodeValue = trim($node->nodeValue);
                 continue;
             };
 
-            // 1. "Trim" each text node by removing its leading and trailing spaces and newlines.
-            // Modified by CS: keep whitespace around inline elements
-            if (in_array($node->parentNode->nodeName, $this->options['keep_whitespace_around'])) {
-                $replacement = ' ';
-            } else {
-                $replacement = '';
+            $node->nodeValue = str_replace(["\r", "\n", "\t"], ' ', $node->nodeValue);
+            $node->nodeValue = preg_replace('/\s{2,}/', ' ', $node->nodeValue);
+
+            if (!($node->previousSibling && in_array($node->previousSibling->nodeName, $this->options['keep_whitespace_around']))) {
+                $node->nodeValue = ltrim($node->nodeValue);
             }
 
-            $r_replacement = $replacement;
-            if ($node->previousSibling && in_array($node->previousSibling->nodeName, $this->options['keep_whitespace_around'])) {
-                $r_replacement = ' ';
+            if (!($node->nextSibling && in_array($node->nextSibling->nodeName, $this->options['keep_whitespace_around']))) {
+                $node->nodeValue = rtrim($node->nodeValue);
             }
-            $node->nodeValue = preg_replace('/^[\s\r\n]+/', $r_replacement, $node->nodeValue);
 
-            $l_replacement = $replacement;
-            if ($node->nextSibling && in_array($node->nextSibling->nodeName, $this->options['keep_whitespace_around'])) {
-                $l_replacement = ' ';
-            }
-            $node->nodeValue = preg_replace('/[\s\r\n]+$/', $l_replacement, $node->nodeValue);
-
-            $node->nodeValue = preg_replace('/[\s]+/', ' ', $node->nodeValue);
-
-
-            // 2. Resulting text node may have become "empty" (zero length nodeValue) after trim. If so, remove it from the dom.
             if((strlen($node->nodeValue) == 0)) {
                 $node->parentNode->removeChild($node);
             }
