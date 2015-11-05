@@ -204,10 +204,11 @@ class PrettyMin
         if (is_array($this->options['remove_empty_attributes'])) {
             $xpath = new \DOMXPath($this->doc);
             foreach ($this->options['remove_empty_attributes'] as $attr) {
-                // TODO: this is very slow, needs to be improved.
                 /** @var \DOMElement $el */
-                foreach ($xpath->query('//*[string-length(normalize-space(@' . $attr . ')) = 0]') as $el) {
-                    $el->removeAttribute($attr);
+                foreach ($xpath->query('//*[@' . $attr . ']') as $el) {
+                    if (trim($el->getAttribute($attr)) == '') {
+                        $el->removeAttribute($attr);
+                    }
                 }
             }
         }
