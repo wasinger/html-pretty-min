@@ -1,0 +1,23 @@
+{
+    "name": "wa72/html-pretty-min",
+    "description":"HTML minifier and indenter that works on the DOM tree",
+    "type":"library",
+    "license":"MIT",
+    "require": {
+        "mrclay/jsmin-php": "^2.3",
+        "tubalmartin/cssmin": "^2.4",
+        "symfony/options-resolver": "^2.6"
+    },
+    "autoload":{
+        "psr-4":{
+            "Wa72\\HtmlPrettymin\\":""
+        }
+    },
+
+    "authors": [
+        {
+            "name": "Christoph Singer",
+            "email": "singer@webagentur72.de"
+        }
+    ]
+}
