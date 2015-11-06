@@ -4,7 +4,7 @@
  * in order to find the most performant implementation for a specific task
  */
 
-require_once('../vendor/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 ////// TESTS //////
 
@@ -86,7 +86,7 @@ runTest('Remove whitespace v2', function($d) {
         };
 
         $node->nodeValue = str_replace(["\r", "\n", "\t"], ' ', $node->nodeValue);
-        $node->nodeValue = preg_replace('/\s{2,}/', ' ', $node->nodeValue);
+        $node->nodeValue = preg_replace('/ {2,}/', ' ', $node->nodeValue);
 
         // 1. "Trim" each text node by removing its leading and trailing spaces and newlines.
         if (!($node->previousSibling && in_array($node->previousSibling->nodeName, $keep_whitespace_around))) {
@@ -103,6 +103,38 @@ runTest('Remove whitespace v2', function($d) {
     }
 });
 
+
+runTest('Remove whitespace v3', function($d) {
+    $x = new \DOMXPath($d);
+    $keep_whitespace_in = ['pre', 'style', 'script'];
+    $keep_whitespace_around = ['a', 'b', 'i'];
+    $nodeList = $x->query("//text()");
+    foreach($nodeList as $node) {
+        /** @var \DOMNode $node */
+
+        if (in_array($node->parentNode->nodeName, $keep_whitespace_in)) {
+            continue;
+        };
+
+        $node->nodeValue = str_replace(["\r", "\n", "\t"], ' ', $node->nodeValue);
+        while (strpos($node->nodeValue, '  ') !== false) {
+          $node->nodeValue = str_replace('  ', ' ', $node->nodeValue);
+        }
+
+        // 1. "Trim" each text node by removing its leading and trailing spaces and newlines.
+        if (!($node->previousSibling && in_array($node->previousSibling->nodeName, $keep_whitespace_around))) {
+                $node->nodeValue = ltrim($node->nodeValue);
+        }
+
+        if (!($node->nextSibling && in_array($node->nextSibling->nodeName, $keep_whitespace_around))) {
+            $node->nodeValue = rtrim($node->nodeValue);
+        }
+
+        if((strlen($node->nodeValue) == 0)) {
+            $node->parentNode->removeChild($node);
+        }
+    }
+});
 
 ////// helper funtions //////
 

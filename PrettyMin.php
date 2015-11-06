@@ -252,7 +252,10 @@ class PrettyMin
             };
 
             $node->nodeValue = str_replace(["\r", "\n", "\t"], ' ', $node->nodeValue);
-            $node->nodeValue = preg_replace('/\s{2,}/', ' ', $node->nodeValue);
+            //$node->nodeValue = preg_replace('/ {2,}/', ' ', $node->nodeValue);
+            while (strpos($node->nodeValue, '  ') !== false) {
+                $node->nodeValue = str_replace('  ', ' ', $node->nodeValue);
+            }
 
             if (!($node->previousSibling && in_array($node->previousSibling->nodeName, $this->options['keep_whitespace_around']))) {
                 $node->nodeValue = ltrim($node->nodeValue);
