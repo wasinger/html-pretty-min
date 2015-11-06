@@ -19,7 +19,9 @@ Currently it has the following features:
 Installation
 ------------
 
-`composer require wasinger/html-pretty-min`
+HTML Pretty-Min is listed on [Packagist](https://packagist.org/packages/wa72/html-pretty-min).
+
+`composer require wa72/html-pretty-min`
 
 Usage
 -----
@@ -37,7 +39,9 @@ $output = $pm
     ->saveHtml();
 ```
 
-Attention: Because the formatting is done directly on the DOM tree, a DOMDocument given to the `load()` method
+For prettyprinting, call the `indent()` method instead of `minify()`.
+
+**Attention**: Because the formatting is done directly on the DOM tree, a DOMDocument object given to the `load()` method
 will be modified:
 
 ```php
