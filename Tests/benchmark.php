@@ -20,12 +20,29 @@ runTest('Select empty attributes using simple XPath attribute selector and PHP t
     }
 });
 
-runTest('Select empty attributes using complicated XPath function', function($d) {
+runTest('Select empty attributes using XPath string functions', function($d) {
     $xpath = new \DOMXPath($d);
     foreach (['style', 'class'] as $attr) {
         /** @var \DOMElement $el */
         foreach ($xpath->query('//*[string-length(normalize-space(@' . $attr . ')) = 0]') as $el) {
             $el->removeAttribute($attr);
+        }
+    }
+});
+
+runTest('Select empty attributes using XPath | operator and PHP test for empty string', function($d) {
+    $xpath = new \DOMXPath($d);
+    $query = '';
+    foreach (['style', 'class'] as $no => $attr) {
+       $query .= ($no == 0 ? '' : ' | ') . '//@' . $attr;
+    }
+
+//    echo "Query: $query \n";
+    /** @var \DOMNode $attr */
+    foreach ($xpath->query($query) as $no => $attr) {
+//        if ($no < 10) echo "Found attr " . $attr->nodeName . " with value: " . $attr->textContent . "\n";
+        if (trim($attr->textContent) == '') {
+            $attr->parentNode->removeAttribute($attr->nodeName);
         }
     }
 });
@@ -121,12 +138,46 @@ runTest('Remove whitespace v3', function($d) {
           $node->nodeValue = str_replace('  ', ' ', $node->nodeValue);
         }
 
+
         // 1. "Trim" each text node by removing its leading and trailing spaces and newlines.
         if (!($node->previousSibling && in_array($node->previousSibling->nodeName, $keep_whitespace_around))) {
-                $node->nodeValue = ltrim($node->nodeValue);
+            $node->nodeValue = ltrim($node->nodeValue);
         }
 
         if (!($node->nextSibling && in_array($node->nextSibling->nodeName, $keep_whitespace_around))) {
+            $node->nodeValue = rtrim($node->nodeValue);
+        }
+
+        if((strlen($node->nodeValue) == 0)) {
+            $node->parentNode->removeChild($node);
+        }
+    }
+});
+
+runTest('Remove whitespace v4', function($d) {
+    $x = new \DOMXPath($d);
+    $keep_whitespace_in = ['pre', 'style', 'script'];
+    $keep_whitespace_around = ['a', 'b', 'i'];
+    $nodeList = $x->query("//text()");
+    foreach($nodeList as $node) {
+        /** @var \DOMNode $node */
+
+        if (in_array($node->parentNode->nodeName, $keep_whitespace_in)) {
+            continue;
+        };
+
+        $node->nodeValue = str_replace(["\r", "\n", "\t"], ' ', $node->nodeValue);
+        while (strpos($node->nodeValue, '  ') !== false) {
+            $node->nodeValue = str_replace('  ', ' ', $node->nodeValue);
+        }
+
+
+        // 1. "Trim" each text node by removing its leading and trailing spaces and newlines.
+        if (substr($node->nodeValue, 0, 1) == ' ' && !($node->previousSibling && in_array($node->previousSibling->nodeName, $keep_whitespace_around))) {
+            $node->nodeValue = ltrim($node->nodeValue);
+        }
+
+        if (substr($node->nodeValue, -1) == ' ' && !($node->nextSibling && in_array($node->nextSibling->nodeName, $keep_whitespace_around))) {
             $node->nodeValue = rtrim($node->nodeValue);
         }
 
