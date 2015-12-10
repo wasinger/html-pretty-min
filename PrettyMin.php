@@ -257,12 +257,18 @@ class PrettyMin
                 $node->nodeValue = str_replace('  ', ' ', $node->nodeValue);
             }
 
-            if (!($node->previousSibling && in_array($node->previousSibling->nodeName, $this->options['keep_whitespace_around']))) {
-                $node->nodeValue = ltrim($node->nodeValue);
-            }
+            if (!in_array($node->parentNode->nodeName, $this->options['keep_whitespace_around'])) {
+                if (!($node->previousSibling && in_array($node->previousSibling->nodeName,
+                        $this->options['keep_whitespace_around']))
+                ) {
+                    $node->nodeValue = ltrim($node->nodeValue);
+                }
 
-            if (!($node->nextSibling && in_array($node->nextSibling->nodeName, $this->options['keep_whitespace_around']))) {
-                $node->nodeValue = rtrim($node->nodeValue);
+                if (!($node->nextSibling && in_array($node->nextSibling->nodeName,
+                        $this->options['keep_whitespace_around']))
+                ) {
+                    $node->nodeValue = rtrim($node->nodeValue);
+                }
             }
 
             if((strlen($node->nodeValue) == 0)) {

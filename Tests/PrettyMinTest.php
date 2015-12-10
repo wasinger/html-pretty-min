@@ -37,6 +37,7 @@ class PrettyMinTest extends \PHPUnit_Framework_TestCase
         <div class="" style=""><p>This is <b>bold</b>
             Text.
             And some more text, still in the same paragraph.
+            <strong>Inline tag </strong>whith whitespace at the end but not after.
             </p><p>This is another paragraph with a <a href="">link</a>.
             </p>
         </div>
@@ -55,7 +56,7 @@ HTML;
 
         $expected = <<<HTML
 <!DOCTYPE html>
-<html><head><title>Test</title><script>$(document).ready(function(){if(this&&that&&a>b){doSomething();}});</script><style>body>div{border-top:1px solid green}</style></head><body><h1>Test</h1><div class="keep"><div><p>This is <b>bold</b> Text. And some more text, still in the same paragraph.</p><p>This is another paragraph with a <a href="">link</a>.</p></div></div><form><input type="text" name="a"><input type="text" name="b"></form></body></html>
+<html><head><title>Test</title><script>$(document).ready(function(){if(this&&that&&a>b){doSomething();}});</script><style>body>div{border-top:1px solid green}</style></head><body><h1>Test</h1><div class="keep"><div><p>This is <b>bold</b> Text. And some more text, still in the same paragraph. <strong>Inline tag </strong>whith whitespace at the end but not after.</p><p>This is another paragraph with a <a href="">link</a>.</p></div></div><form><input type="text" name="a"><input type="text" name="b"></form></body></html>
 
 HTML;
 
@@ -93,7 +94,7 @@ HTML;
 		<h1>Test</h1>
 		<div class="keep">
 			<div class="" style="">
-				<p>This is <b>bold</b> Text. And some more text, still in the same paragraph.</p>
+				<p>This is <b>bold</b> Text. And some more text, still in the same paragraph. <strong>Inline tag </strong>whith whitespace at the end but not after.</p>
 				<p>This is another paragraph with a <a href="">link</a>.</p>
 			</div>
 		</div>
