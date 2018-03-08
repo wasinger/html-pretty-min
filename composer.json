@@ -4,8 +4,9 @@
     "type":"library",
     "license":"MIT",
     "require": {
+        "php": ">=5.4",
         "mrclay/jsmin-php": "^2.3",
-        "tubalmartin/cssmin": "^2.4",
+        "tubalmartin/cssmin": "^4",
         "symfony/options-resolver": ">=2.3"
     },
     "require-dev": {

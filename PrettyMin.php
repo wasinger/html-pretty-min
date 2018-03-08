@@ -2,6 +2,7 @@
 namespace Wa72\HtmlPrettymin;
 
 use JSMin\JSMin;
+use tubalmartin\CssMin\Minifier as CSSmin;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -183,7 +184,7 @@ class PrettyMin
             $code = $element->nodeValue;
             $element->nodeValue = '';
             if (trim($code)) {
-                $min = new \CSSmin();
+                $min = new CSSmin();
                 if (trim($code)) {
                     $code = trim($min->run($code));
                 }
