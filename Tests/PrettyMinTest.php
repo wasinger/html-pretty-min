@@ -4,7 +4,7 @@ namespace Wa72\HtmlPrettymin\Tests;
 
 use Wa72\HtmlPrettymin\PrettyMin;
 
-class PrettyMinTest extends \PHPUnit_Framework_TestCase
+class PrettyMinTest extends \PHPUnit\Framework\TestCase
 {
 
 
