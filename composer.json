@@ -14,10 +14,14 @@
     },
     "autoload":{
         "psr-4":{
-            "Wa72\\HtmlPrettymin\\":""
+            "Wa72\\HtmlPrettymin\\": ""
         }
     },
-
+    "autoload-dev": {
+        "psr-4": {
+            "Wa72\\HtmlPrettymin\\Tests\\": "Tests"
+        }
+    },
     "authors": [
         {
             "name": "Christoph Singer",
