@@ -3,8 +3,9 @@ namespace Wa72\HtmlPrettymin\Tests;
 
 
 use Wa72\HtmlPrettymin\PrettyMin;
+use PHPUnit\Framework\TestCase;
 
-class PrettyMinTest extends \PHPUnit\Framework\TestCase
+class PrettyMinTest extends TestCase
 {
 
 
@@ -62,6 +63,35 @@ HTML;
 
 
         $this->assertEquals($expected, $pm->saveHtml());
+    }
+
+    public function testLoadOnDOMDocument()
+    {
+        $doc = new \DOMDocument();
+        $doc->loadHTML("<html><body>Test<br></body></html>");
+        $pm = new PrettyMin();
+        $pm->load($doc);
+        $pm->minify();
+
+        $expected = <<<HTML
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>Test<br></body></html>
+
+HTML;
+
+
+        $this->assertEquals($expected, $pm->saveHtml());
+    }
+
+    public function testGetDomDocument()
+    {
+        $doc = new \DOMDocument();
+        $doc->loadHTML("<html><body>Test<br></body></html>");
+        $pm = new PrettyMin();
+        $pm->load($doc);
+        $pm->minify();
+
+        $this->assertInstanceOf('\DOMDocument', $pm->getDomDocument());
     }
 
     public function testIndent()
