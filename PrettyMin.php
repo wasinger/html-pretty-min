@@ -322,9 +322,9 @@ class PrettyMin
             // If children have been indented, then the closing tag
             // of the current node must also be indented.
             if ($currentNode->lastChild && ($currentNode->lastChild->nodeType == XML_CDATA_SECTION_NODE || $currentNode->lastChild->nodeType == XML_TEXT_NODE) && preg_match('/\n\s?$/', $currentNode->lastChild->textContent)) {
-                $currentNode->lastChild->nodeValue = preg_replace('/\n\s?$/', "\n" . str_repeat("\t", $depth), $currentNode->lastChild->nodeValue);
+                $currentNode->lastChild->nodeValue = preg_replace('/\n\s?$/', "\n" . str_repeat($indent_characters, $depth), $currentNode->lastChild->nodeValue);
             } else {
-                $textNode = $currentNode->ownerDocument->createTextNode("\n" . str_repeat("\t", $depth));
+                $textNode = $currentNode->ownerDocument->createTextNode("\n" . str_repeat($indent_characters, $depth));
                 $currentNode->appendChild($textNode);
             }
         }
