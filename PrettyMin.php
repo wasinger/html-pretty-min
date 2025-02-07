@@ -244,8 +244,21 @@ class PrettyMin
     protected function removeWhitespace() {
         // Retrieve all text nodes using XPath
         $x = new \DOMXPath($this->doc);
-        $nodeList = $x->query("//text()");
-        foreach($nodeList as $node) {
+
+        // Ignore child nodes where we need to preserve whitespace on ancestor
+        $x_filter = array_map(function ($nodeName) {
+            return "ancestor::$nodeName";
+        }, $this->options['keep_whitespace_in']);
+
+        $x_filter = implode(' or ', $x_filter);
+
+        if ($x_filter) {
+            $nodeList = $x->query("//*[not($x_filter)]/text()");
+        } else {
+            $nodeList = $x->query("//text()");
+        }
+
+        foreach ($nodeList as $node) {
             /** @var \DOMNode $node */
 
             if (in_array($node->parentNode->nodeName, $this->options['keep_whitespace_in'])) {
