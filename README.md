@@ -1,14 +1,14 @@
 HTML Pretty-Min
 ===============
 
-[![Build Status](https://travis-ci.org/wasinger/html-pretty-min.svg?branch=master)](http://travis-ci.org/wasinger/html-pretty-min)
+![tests](https://github.com/wasinger/html-pretty-min/actions/workflows/tests.yml/badge.svg?branch=master)
 [![Latest Version](http://img.shields.io/packagist/v/wa72/html-pretty-min.svg)](https://packagist.org/packages/wa72/html-pretty-min)
 
 
 HTML Pretty-Min is a PHP library for minifying and prettyprinting (indenting) HTML documents
 that works directly on the DOM tree of an HTML document.
 
-Currently it has the following features:
+Currently, it has the following features:
 
 - **Prettyprint**:
   - Indent Block-level elements, do not indent inline elements
