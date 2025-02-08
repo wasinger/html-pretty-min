@@ -136,4 +136,39 @@ HTML;
 
         $this->assertEquals($expected, $pm->saveHtml());
     }
+
+    public function testPre()
+    {
+        $pre = <<<HTML
+if test
+  do this
+endif
+    <code>
+    if test
+      do this
+    endif
+    </code>
+        <samp>
+        if test
+          do this
+        endif
+        </samp>
+            <kbd>
+              if test
+                do this
+              endif
+            </kbd>
+HTML;
+
+        $html = "<!DOCTYPE html><html><body><pre>{$pre}</pre></body></html>";
+
+        $pm = new PrettyMin();
+        $pm->load($html);
+        $pm->indent();
+
+        // Contents of the <pre> section needs to match perfectly
+        preg_match('#<pre>(.*)</pre>#ms', $pm->saveHtml(), $match);
+
+        $this->assertEquals(trim($pre), trim($match[1]));  // Trailing and leading whitespace is allowed to be different
+    }
 }
